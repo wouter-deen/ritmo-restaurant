@@ -1,6 +1,6 @@
 import {
   Box,
-  Button, FormControl, FormLabel, HStack, Img, Input, InputGroup,
+  Button, Divider, FormControl, FormLabel, HStack, Img, Input, InputGroup,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -9,10 +9,11 @@ import {
   ModalHeader,
   ModalOverlay, Radio, RadioGroup, Select, Stack, Text, useNumberInput
 } from "@chakra-ui/react";
-import {useState} from "react";
+import {createContext, useState} from "react";
 
 export default function ItemModal(props) {
-  const [radioValue, setRadioValue] = useState('0')
+  const [radioValue, setRadioValue] = useState('0');
+  const CartContext = createContext(null);
 
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
   useNumberInput({
@@ -32,10 +33,10 @@ export default function ItemModal(props) {
       <ModalOverlay />
       <ModalContent>
         <Box bgImg={props.pic} borderRadius="6px 6px 0 0" h="200px" backgroundPosition="center" backgroundSize="cover"/>
-        <ModalHeader>{props.name}</ModalHeader>
-        <ModalCloseButton bg="gray.200"/>
+        <ModalHeader pb={0}>{props.name}</ModalHeader>
+        <ModalCloseButton bg="rgba(255,255,255,.6)" backdropFilter="blur(5px)"/>
         <ModalBody>
-          <Text>{props.descr}</Text>
+          <Text pb={4}>{props.descr}</Text>
 
           <Box as="form" mt={4}>
             {props.selectTitle &&
@@ -63,7 +64,7 @@ export default function ItemModal(props) {
             }
 
             <FormControl mt={2}>
-              <FormLabel>Select amount</FormLabel>
+              <FormLabel>Order amount</FormLabel>
               <HStack mt={2} w="full">
                 <Button {...dec}>-</Button>
                 <Input {...input} />
