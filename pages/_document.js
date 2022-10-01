@@ -15,7 +15,10 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head/>
+        <Head>
+          <title>Ritmo Ordering</title>
+          <link rel="shortcut icon" href="/ritmo-logo.svg" />
+        </Head>
         <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />

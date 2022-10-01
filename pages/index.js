@@ -2,6 +2,7 @@ import NavBar from "@/components/NavBar";
 import Promotion from "@/components/Promotion";
 import {Box, Divider} from "@chakra-ui/react";
 import Menu from "@/components/Menu/Menu";
+import {Head} from "next/head";
 
 export default function Home() {
   return (
