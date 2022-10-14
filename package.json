@@ -16,12 +16,14 @@
     "@fontsource/merriweather": "^4.5.13",
     "@fontsource/poppins": "^4.5.9",
     "@fontsource/reem-kufi": "^4.5.10",
-    "chakra-ui-steps": "^1.7.4",
+    "firebase": "^9.12.1",
+    "firebase-admin": "^11.1.0",
     "framer-motion": "^7.3.6",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "swr": "^1.3.0"
   },
   "devDependencies": {
     "eslint": "8.23.1",

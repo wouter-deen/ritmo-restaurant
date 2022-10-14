@@ -10,8 +10,6 @@ export default function Menu() {
                 pic="/pizza_pic.jpg"
                 selectTitle="Choose your pizza"
                 selectOptions={["Margherita", "Pepperoni", "Caprese"]}
-                radioTitle="Pick a sauce"
-                radioOptions={["Tomato", "BBQ"]}
                 price={11.99}
                 bottomOffset={4}
                 descr="Neapolitan-style pizzas, freshly baked in our stone ovens by our Italian chefs. Customize to your liking!"
