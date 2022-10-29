@@ -13,10 +13,7 @@ export default function MenuItem(props) {
       </Box>
       <Img w={24} src={props.img} pos="absolute" bottom={props.bottomOffset} right={4} filter="drop-shadow(0 10px 8px rgba(0,0,0,.15))"/>
 
-      <ItemModal isOpen={isOpen} onClose={onClose} name={props.name} descr={props.descr} img={props.img} pic={props.pic}
-                 selectOptions={props.selectOptions} radioTitle={props.radioTitle} radioOptions={props.radioOptions}
-                 selectTitle={props.selectTitle}
-      />
+      <ItemModal isOpen={isOpen} onClose={onClose} {...props}/>
     </Box>
   )
 }

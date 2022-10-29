@@ -22,11 +22,14 @@ import "@fontsource/merriweather/400.css"
 import "@fontsource/merriweather/400-italic.css"
 import "@fontsource/merriweather/700.css"
 import "@fontsource/merriweather/900.css"
+import {BasketProvider} from "@/components/BasketContext";
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+      <BasketProvider>
+        <Component {...pageProps} />
+      </BasketProvider>
     </ChakraProvider>
   )
 }

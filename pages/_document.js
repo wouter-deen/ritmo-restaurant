@@ -16,7 +16,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <title>Ritmo Ordering</title>
           <link rel="shortcut icon" href="/ritmo-logo.svg" />
         </Head>
         <body>

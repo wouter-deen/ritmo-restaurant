@@ -14,11 +14,10 @@ import {
   PinInputField,
   useNumberInput
 } from "@chakra-ui/react";
-import {createContext, useState} from "react";
+import {useState} from "react";
 
 export default function AcceptModal(props) {
   const [radioValue, setRadioValue] = useState('0');
-  const CartContext = createContext(null);
 
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
