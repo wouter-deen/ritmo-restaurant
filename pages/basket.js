@@ -2,15 +2,13 @@ import {Box, Button, Divider, Flex, Heading, Icon, Img, List, Select, Table, Tbo
 import {FaShoppingBasket} from "react-icons/fa";
 import NavBar from "@/components/NavBar";
 import {useContext} from "react";
-import BasketContext from "@/components/BasketContext";
+import BasketContext from "@/lib/basket-context";
 import BasketItem from "@/components/Basket/BasketItem";
 
 export default function Basket() {
-  const [items, addItem, removeItem, prices] = useContext(BasketContext);
+  const [basketItems, addItem, removeItem, prices] = useContext(BasketContext);
   const banks = ["ABN Amro", "ASN Bank", "Bunq", "ING", "Knab", "Rabobank", "Regiobank", "Revolut", "SNS",
     "Triodos Bank", "Van Lanschot", "N26"]
-
-  console.log(items)
 
   return (
     <Box minH="100vh" bg="gray.100" pb={12}>
@@ -21,11 +19,8 @@ export default function Basket() {
           <Heading fontFamily="Merriweather" fontWeight={800}>Your items</Heading>
         </Flex>
         <List mt={4} border="1px solid" borderColor="gray.200" rounded="md">
-          {items.map((item, key) => (
-            <Box key={key}>
-              <BasketItem item={item}/>
-              <Divider/>
-            </Box>
+          {basketItems.map((item, key) => (
+            <BasketItem item={item} key={key}/>
           ))}
         </List>
       </Box>
@@ -35,7 +30,7 @@ export default function Basket() {
           <Img src="/ideal-logo.svg" alt="iDEAL logo" boxSize={9} mr={1}/>
           <Heading fontFamily="Merriweather" fontWeight={800}>Payment</Heading>
         </Flex>
-        <Box border="1px solid" borderColor="gray.200" rounded="md" mt={2}>
+        <Box rounded="md" mt={4}>
           <Table>
             <Tbody>
               <Tr>

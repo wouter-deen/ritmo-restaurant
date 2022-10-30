@@ -19,25 +19,29 @@ import {
   Text,
   useNumberInput
 } from "@chakra-ui/react";
-import {useContext, useState} from "react";
-import BasketContext from "@/components/BasketContext";
+import {useContext, useEffect, useState} from "react";
+import BasketContext from "@/lib/basket-context";
 
 export default function ItemModal(props) {
-  const [items, addItem, removeItem, prices] = useContext(BasketContext);
+  const [basketItems, addItem, removeItem, prices] = useContext(BasketContext);
   const [radioValue, setRadioValue] = useState("0");
-  const [selectValue, setSelectValue] = useState("-1");
+  const [selectValue, setSelectValue] = useState("");
+  const [orderQuantity, setOrderQuantity] = useState(1);
+  const [addButtonDisabled, setAddButtonDisabled] = useState(false);
 
-  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
-    step: 1, defaultValue: 1, min: 1, max: 30, precision: 0
+  const [maxOrderQuantity, setMaxOrderQuantity] = useState(1);
+
+  let { value, getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
+    step: 1, defaultValue: 1, min: 1, max: maxOrderQuantity, precision: 0, value: orderQuantity
   })
 
-  const inc = getIncrementButtonProps()
-  const dec = getDecrementButtonProps()
-  const quantity = getInputProps()
+  const inc = getIncrementButtonProps();
+  const dec = getDecrementButtonProps();
+  const quantity = getInputProps();
 
   const addToBasket = (event) => {
     event.preventDefault();
-    const options = []
+    let options = [];
     let itemIDs = [];
 
     if(props.radioOptions) {
@@ -45,7 +49,7 @@ export default function ItemModal(props) {
       itemIDs.push(...props.radioOptions[radioValue].itemIDs);
     }
 
-    if(props.selectOptions && selectValue !== "-1") {
+    if(props.selectOptions && selectValue !== "") {
       options.push(props.selectOptions[selectValue].name);
       itemIDs.push(props.selectOptions[selectValue].itemID);
     }
@@ -53,7 +57,7 @@ export default function ItemModal(props) {
     addItem({
       name: props.name,
       price: props.price,
-      quantity: quantity["aria-valuenow"],
+      quantity: orderQuantity,
       options: options,
       itemIDs: itemIDs,
       img: props.img
@@ -62,6 +66,51 @@ export default function ItemModal(props) {
     props.onClose();
   }
 
+  // Sets and updates maxOrderQuantity
+  useEffect(() => {
+    if(props.radioOptions) {
+      let localMaxAmount = 1E9;
+      props.radioOptions.forEach((option) => {
+        option.itemIDs.forEach((itemID) => {
+          const item = props.items[itemID];
+          if (item.quantity < localMaxAmount) localMaxAmount = item.quantity;
+        })
+      })
+      if(localMaxAmount < maxOrderQuantity) setMaxOrderQuantity(localMaxAmount);
+    }
+    //console.log(maxOrderQuantity)
+  }, [props.items])
+
+  useEffect(() => {
+    if (selectValue !== "") {
+      const itemID = props.selectOptions[selectValue]?.itemID;
+      const item = props.items[itemID];
+      if (maxOrderQuantity < item.quantity){
+        setAddButtonDisabled(true);
+      } else {
+        setAddButtonDisabled(false);
+      }
+    }
+  }, [props.items])
+
+  // Fires when the user changes the select or radio input.
+  const handleChange = (event, type) => {
+    if(type === "select") {
+      const newValue = event.target.value;
+      setSelectValue(newValue);
+      if(newValue !== "") {
+        const itemID = props.selectOptions[newValue]?.itemID;
+        const item = props.items[itemID];
+        setMaxOrderQuantity(item?.quantity - 5);
+        setOrderQuantity(1);
+        setAddButtonDisabled(false);
+      } else {
+        setAddButtonDisabled(true);
+      }
+    } else if(type === "radio") {
+
+    }
+  }
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} motionPreset='slideInBottom'>
@@ -77,9 +126,9 @@ export default function ItemModal(props) {
             {props.selectTitle &&
               <FormControl>
                 <FormLabel>{props.selectTitle}</FormLabel>
-                <Select placeholder='Select option' onChange={(e) => setSelectValue(e.target.value)} value={selectValue}>
+                <Select placeholder='Select option' onChange={(e) => handleChange(e, "select")} value={selectValue}>
                   {props.selectOptions.map((option, i) => (
-                    <option key={i} value={i}>{option.name}</option>
+                    <option key={i} value={i} disabled={props.items[option.itemID]?.quantity <= 5}>{option.name}</option>
                   ))}
                 </Select>
               </FormControl>
@@ -91,7 +140,9 @@ export default function ItemModal(props) {
                 <RadioGroup onChange={setRadioValue} value={radioValue}>
                   <Stack direction="column">
                     {props.radioOptions.map((option, i) => (
-                      <Radio key={i} value={`${i}`}>{option.name}</Radio>
+                      <Radio key={i} value={`${i}`} isDisabled={props.items[option.itemIDs[1]]?.quantity <= 5}>
+                        {option.name}
+                      </Radio>
                     ))}
                   </Stack>
                 </RadioGroup>
@@ -101,9 +152,9 @@ export default function ItemModal(props) {
             <FormControl mt={2}>
               <FormLabel>Order amount</FormLabel>
               <HStack mt={2} w="full">
-                <Button {...dec}>-</Button>
-                <Input {...quantity} />
-                <Button {...inc}>+</Button>
+                <Button {...dec} onClick={() => setOrderQuantity(orderQuantity-1)}>-</Button>
+                <Input {...quantity} onChange={(e) => setOrderQuantity(e.target.value)}/>
+                <Button {...inc} onClick={() => setOrderQuantity(orderQuantity+1)}>+</Button>
               </HStack>
             </FormControl>
           </Box>
@@ -114,7 +165,9 @@ export default function ItemModal(props) {
           <Button mr={3} onClick={props.onClose}>
             Close
           </Button>
-          <Button colorScheme="blackAlpha" bg="black" _hover={{backgroundColor: "#000"}} onClick={addToBasket}>Add to cart</Button>
+          <Button colorScheme="blackAlpha" bg="black" _hover={{backgroundColor: "#000"}} onClick={addToBasket} disabled={addButtonDisabled}>
+            Add to cart
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -1,33 +1,48 @@
-import {Box, Flex, IconButton, Img, ListItem, Text, UnorderedList} from "@chakra-ui/react";
-import {FaPen} from "react-icons/fa";
+import {
+  Box,
+  Circle,
+  Flex,
+  Grid,
+  GridItem, HStack,
+  IconButton,
+  Img,
+  ListItem,
+  Text,
+  UnorderedList,
+  VStack
+} from "@chakra-ui/react";
+import {FaPen, FaTrash} from "react-icons/fa";
 
 export default function BasketItem({item}) {
 
   return (
-    <ListItem my={2} px={4}>
-      <Flex justify="space-between">
-        <Flex rounded="md" border="1px solid" borderColor="gray.200" align="center" h="75px" w="75px">
-          <Img alt="illustration" src={item.img} h="75px" w="75px" objectFit="contain"/>
-        </Flex>
-        <Box>
-          <Flex align="center">
-            <Text fontWeight={700} mr={1}>{item.name}</Text>
-            <Box bg="black" rounded="md" h="fit-content" px={1} fontWeight="bold" color="white" fontSize="sm">
-              {item.quantity}×
-            </Box>
-          </Flex>
-          <UnorderedList>
-            {item.options?.map((option, key) => (
-              <ListItem key={key}>{option}</ListItem>
-            ))}
-          </UnorderedList>
-
-          <Box bg="gray.100" rounded="md" w="fit-content" textAlign="right" mt={1}>
-            <Text px={1}>€ {item.price * item.quantity} ({item.quantity} × {item.price})</Text>
-          </Box>
+    <ListItem my={4} px={4}>
+      <HStack align="top" pos="relative">
+        <Box rounded="lg" border="1px" borderColor="gray.200" align="center" boxSize="70px" pos="relative">
+          <Img alt="illustration" src={item.img} boxSize="70px" objectFit="contain" p={1}/>
+          <Circle pos="absolute" size="25px" bg="gray.50" border="1px" borderColor="gray.200" fontWeight="600"
+                  fontSize="sm" right={-3} top={-3}>
+            {item.quantity}
+          </Circle>
         </Box>
-        <IconButton aria-label={"remove"} icon={<FaPen/>} size="sm"/>
-      </Flex>
+
+        <Box pl={3}>
+          <Flex align="center">
+            <Text fontWeight={700} fontSize="lg">{item.name}</Text>
+          </Flex>
+
+          {item.options?.map((option, key) => (
+            <Text key={key} color="gray.500" fontStyle="italic">{option} </Text>
+          ))}
+
+          <Flex align="flex-end">
+            <Text fontWeight={500}>€ {item.price * item.quantity}</Text>
+            <Text fontSize="xs" color="gray.400" ml={1}>(€{item.price} each)</Text>
+          </Flex>
+        </Box>
+
+        <IconButton aria-label={"remove"} icon={<FaTrash/>} size="sm" pos="absolute" right={0} top={0}/>
+      </HStack>
     </ListItem>
   )
 }
