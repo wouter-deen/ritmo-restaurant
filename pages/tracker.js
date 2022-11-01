@@ -13,9 +13,10 @@ export default function OrderTracker() {
   return (
     <Box minH="100vh" bg="gray.100" pb={12}>
       <NavBar/>
-      <Box bgGradient='linear(to-l, #7928CA, #FF0080)' color="white" rounded="xl" p={4} m={4} mt={24} align="center">
-        <Heading fontFamily="Merriweather" mr={2}>Thanks heaps!</Heading>
-        <Icon as={FaRegCheckCircle} boxSize={10} my={4} color="green.300"/>
+      <Box bg="green.400" color="white" rounded="xl" p={4} m={4} mt={32} align="center" pos="relative">
+        <Icon as={FaRegCheckCircle} pos="absolute" top={-10} left="50%" transform="translate(-50%)" boxSize={20}
+              color="white" bg="green.400" p={2} rounded="full" border="8px solid" borderColor="gray.100"/>
+        <Heading fontFamily="Merriweather" mr={2} mt={8}>Thanks heaps!</Heading>
         <Text>Your order has been received and will be prepared shortly.</Text>
       </Box>
 

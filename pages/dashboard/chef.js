@@ -56,13 +56,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -84,13 +84,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -112,13 +112,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -140,13 +140,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -171,13 +171,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -202,13 +202,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -233,13 +233,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>
@@ -264,13 +264,13 @@ export default function ChefPage() {
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>1x</Box>
-                    Granny's Pancakes
+                    Granny&apos;s Pancakes
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex align="center" mt={1}>
                     <Box bg="black" color="white" px={1} py={1} rounded="md" w="fit-content" fontWeight="700" mr={1}>2x</Box>
-                    Farmer's Fries | Mayonnaise sauce
+                    Farmer&apos;s Fries | Mayonnaise sauce
                   </Flex>
                 </ListItem>
               </UnorderedList>

@@ -17,19 +17,23 @@ import {
   Select,
   Stack,
   Text,
-  useNumberInput
+  useNumberInput, useToast
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import BasketContext from "@/lib/basket-context";
 
 export default function ItemModal(props) {
   const [basketItems, addItem, removeItem, prices] = useContext(BasketContext);
-  const [radioValue, setRadioValue] = useState("0");
+  const [radioValue, setRadioValue] = useState("");
   const [selectValue, setSelectValue] = useState("");
   const [orderQuantity, setOrderQuantity] = useState(1);
-  const [addButtonDisabled, setAddButtonDisabled] = useState(false);
-
+  const [addButtonDisabled, setAddButtonDisabled] = useState(true);
   const [maxOrderQuantity, setMaxOrderQuantity] = useState(1);
+
+  const minInventoryAmount = process.env.NEXT_PUBLIC_MIN_INVENTORY_AMOUNT;
+  const toast = useToast();
+
+  if(!props.radioOptions && !props.selectOptions && addButtonDisabled) setAddButtonDisabled(false);
 
   let { value, getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1, defaultValue: 1, min: 1, max: maxOrderQuantity, precision: 0, value: orderQuantity
@@ -47,11 +51,11 @@ export default function ItemModal(props) {
     if(props.radioOptions) {
       options.push(props.radioOptions[radioValue].name);
       itemIDs.push(...props.radioOptions[radioValue].itemIDs);
-    }
-
-    if(props.selectOptions && selectValue !== "") {
+    } else if(props.selectOptions && selectValue !== "") {
       options.push(props.selectOptions[selectValue].name);
       itemIDs.push(props.selectOptions[selectValue].itemID);
+    } else {
+      itemIDs.push(props.itemID)
     }
 
     addItem({
@@ -63,53 +67,69 @@ export default function ItemModal(props) {
       img: props.img
     });
 
+    toast({
+      title: `We've added ${orderQuantity} ${props.name} to your basket.`,
+      status: "success",
+      isClosable: true,
+      duration: 5000
+    });
+
     props.onClose();
   }
 
   // Sets and updates maxOrderQuantity
   useEffect(() => {
-    if(props.radioOptions) {
-      let localMaxAmount = 1E9;
-      props.radioOptions.forEach((option) => {
-        option.itemIDs.forEach((itemID) => {
-          const item = props.items[itemID];
-          if (item.quantity < localMaxAmount) localMaxAmount = item.quantity;
-        })
-      })
-      if(localMaxAmount < maxOrderQuantity) setMaxOrderQuantity(localMaxAmount);
-    }
-    //console.log(maxOrderQuantity)
-  }, [props.items])
-
-  useEffect(() => {
     if (selectValue !== "") {
       const itemID = props.selectOptions[selectValue]?.itemID;
       const item = props.items[itemID];
-      if (maxOrderQuantity < item.quantity){
+      if (item.quantity <= minInventoryAmount){
         setAddButtonDisabled(true);
       } else {
         setAddButtonDisabled(false);
       }
     }
-  }, [props.items])
+  }, [props.items, selectValue])
+
+  useEffect(() => {
+    if(props.radioOptions && radioValue !== "") {
+      const itemIDs = props.radioOptions[parseInt(radioValue)]?.itemIDs;
+      let minQuantity = 1E9;
+      for(const itemID of itemIDs) {
+        const quantity = props.items[itemID].quantity;
+        if(quantity < minQuantity) {
+          minQuantity = quantity;
+        }
+      }
+      if(minQuantity <= minInventoryAmount) {
+        setAddButtonDisabled(true);
+      } else setAddButtonDisabled(false);
+    }
+  }, [props.items, radioValue])
 
   // Fires when the user changes the select or radio input.
-  const handleChange = (event, type) => {
+  const handleChange = (e, type) => {
     if(type === "select") {
-      const newValue = event.target.value;
+      const newValue = e.target.value;
       setSelectValue(newValue);
       if(newValue !== "") {
         const itemID = props.selectOptions[newValue]?.itemID;
         const item = props.items[itemID];
-        setMaxOrderQuantity(item?.quantity - 5);
-        setOrderQuantity(1);
+        setMaxOrderQuantity(item?.quantity - minInventoryAmount);
         setAddButtonDisabled(false);
       } else {
         setAddButtonDisabled(true);
       }
     } else if(type === "radio") {
-
+      setRadioValue(e);
+      let localMaxAmount = 1E9;
+      const option = props.radioOptions[parseInt(e)];
+      option.itemIDs.forEach((itemID) => {
+        const item = props.items[itemID];
+        if (item.quantity < localMaxAmount) localMaxAmount = item.quantity - minInventoryAmount;
+      })
+      setMaxOrderQuantity(localMaxAmount);
     }
+    setOrderQuantity(1);
   }
 
   return (
@@ -128,7 +148,9 @@ export default function ItemModal(props) {
                 <FormLabel>{props.selectTitle}</FormLabel>
                 <Select placeholder='Select option' onChange={(e) => handleChange(e, "select")} value={selectValue}>
                   {props.selectOptions.map((option, i) => (
-                    <option key={i} value={i} disabled={props.items[option.itemID]?.quantity <= 5}>{option.name}</option>
+                    <option key={i} value={i} disabled={props.items[option.itemID]?.quantity <= minInventoryAmount}>
+                      {option.name}
+                    </option>
                   ))}
                 </Select>
               </FormControl>
@@ -137,10 +159,10 @@ export default function ItemModal(props) {
             {props.radioTitle &&
               <FormControl mt={2}>
                 <FormLabel>{props.radioTitle}</FormLabel>
-                <RadioGroup onChange={setRadioValue} value={radioValue}>
+                <RadioGroup onChange={(val) => handleChange(val, "radio")} value={radioValue}>
                   <Stack direction="column">
                     {props.radioOptions.map((option, i) => (
-                      <Radio key={i} value={`${i}`} isDisabled={props.items[option.itemIDs[1]]?.quantity <= 5}>
+                      <Radio key={i} value={`${i}`} isDisabled={props.items[option.itemIDs[1]]?.quantity <= minInventoryAmount}>
                         {option.name}
                       </Radio>
                     ))}

@@ -1,14 +1,60 @@
-import {Box, Button, Divider, Flex, Heading, Icon, Img, List, Select, Table, Tbody, Td, Tr} from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  Flex, FormControl, FormLabel,
+  Heading,
+  Icon,
+  Img,
+  Input,
+  List,
+  Select,
+  Table,
+  Tbody,
+  Td,
+  Tr, useToast
+} from "@chakra-ui/react";
 import {FaShoppingBasket} from "react-icons/fa";
 import NavBar from "@/components/NavBar";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import BasketContext from "@/lib/basket-context";
 import BasketItem from "@/components/Basket/BasketItem";
+import {useRouter} from "next/router";
+import {Host} from "@/lib/host";
 
 export default function Basket() {
+  const router = useRouter();
   const [basketItems, addItem, removeItem, prices] = useContext(BasketContext);
+  const [email, setEmail] = useState(String());
+  const [bank, setBank] = useState("");
+  const [paymentButtonDisabled, setPaymentButtonDisabled] = useState(true);
   const banks = ["ABN Amro", "ASN Bank", "Bunq", "ING", "Knab", "Rabobank", "Regiobank", "Revolut", "SNS",
-    "Triodos Bank", "Van Lanschot", "N26"]
+    "Triodos Bank", "Van Lanschot", "N26"];
+
+  const placeOrder = async () => {
+    console.log("placing order")
+    await fetch(`${Host()}/api/placeOrder`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        items: basketItems,
+        prices: prices,
+        email: email
+      }),
+    }).then((response) => response.json())
+      .then(async (res) => {
+        console.log(res)
+        await router.push(`/tracker&orderID=${res.orderID}`)
+      })
+  }
+
+  useEffect(() => {
+    if(bank !== "" && email && email !== "" && email.includes("@") && email.includes(".")) {
+      setPaymentButtonDisabled(false);
+    } else setPaymentButtonDisabled(true);
+  }, [bank, email]);
 
   return (
     <Box minH="100vh" bg="gray.100" pb={12}>
@@ -49,14 +95,24 @@ export default function Basket() {
           </Table>
         </Box>
 
-        <Select placeholder='Select bank' mt={4}>
-          {banks.map((bank, key) => (
-            <option key={key}>{bank}</option>
-          ))}
-        </Select>
+
+        <FormControl mt={4}>
+          <FormLabel>Bank</FormLabel>
+          <Select placeholder='Select bank' onChange={(e) => setBank(e.target.value)}>
+            {banks.map((bank, key) => (
+              <option key={key}>{bank}</option>
+            ))}
+          </Select>
+        </FormControl>
+
+
+        <FormControl mt={2}>
+          <FormLabel>Email</FormLabel>
+          <Input type="email" placeholder="user@domain.com" onChange={(e) => setEmail(e.target.value)}/>
+        </FormControl>
 
         <Flex justify="flex-end" pt={4}>
-          <Button colorScheme="pink" bg="#d20072">Pay by iDEAL</Button>
+          <Button colorScheme="pink" bg="#d20072" onClick={placeOrder} disabled={paymentButtonDisabled}>Pay by iDEAL</Button>
         </Flex>
       </Box>
 
