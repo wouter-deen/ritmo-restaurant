@@ -4,6 +4,7 @@ import Promotion from "@/components/Promotion";
 import {Box, Divider} from "@chakra-ui/react";
 import Menu from "@/components/Menu/Menu";
 import {Host} from "@/lib/host";
+import firebaseadmin from "@/api/firebaseadmin";
 
 export default function Home({ssrItems}) {
 
@@ -18,12 +19,25 @@ export default function Home({ssrItems}) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${Host()}/api/getProducts`);
-  const ssrItems = await res.json();
+  const db = firebaseadmin.firestore();
+
+  const allProducts = [];
+  try {
+    const productsRef = db.collection("products");
+    productsRef.get().then(async (documents) => {
+      documents.forEach((doc) => {
+        if (doc.data()) {
+          allProducts.push(doc.data());
+        }
+      })
+    })
+  } catch (e) {
+    throw e;
+  }
 
   return {
     props: {
-      ssrItems
+      ssrItems: allProducts
     },
     revalidate: 60,
   }

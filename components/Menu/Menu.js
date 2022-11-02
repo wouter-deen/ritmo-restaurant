@@ -14,7 +14,7 @@ export default function Menu({ssrItems}) {
   return (
     <Box p={4}>
       <Heading fontFamily="Merriweather" fontWeight={900}>What&apos;s cookin&apos;?</Heading>
-      {items && (items[2]?.quantity > 10 || items[3]?.quantity > 10 || items[4]?.quantity > 10) &&
+      {items.length > 0 && (items[2]?.quantity > 10 || items[3]?.quantity > 10 || items[4]?.quantity > 10) &&
         <MenuItem name="Neapolitan Pizza"
                   descr="Neapolitan-style pizzas, freshly baked in our stone ovens by our Italian chefs. Customize to your liking!"
                   img="/pizza.png"
@@ -31,7 +31,7 @@ export default function Menu({ssrItems}) {
         />
       }
 
-      {items && items[0].quantity > 10 &&
+      {items.length > 0 && items[0].quantity > 10 &&
         <MenuItem name="Farmer's Fries"
                   descr="Chunky potato fries with skin. Hand-cut with love and sprinkled with a pinch of Baltic sea salt."
                   img="/fries.png"
@@ -49,7 +49,7 @@ export default function Menu({ssrItems}) {
         />
       }
 
-      {items && items[1].quantity > 10 &&
+      {items.length > 0 && items[1].quantity > 10 &&
         <MenuItem name="Granny's Pancakes"
                   descr="Fluffy American pancakes, made from a recipe that's rumoured to be older than mankind. Topped with maple syrup and fresh blueberries."
                   img="/pancakes.png"
