@@ -15,7 +15,6 @@ if (!admin.apps.length) {
       client_x509_cert_url: process.env.SA_CLIENT_X509_CERT_URL
     }),
     databaseURL: "dB_URL",
-    storageBucket: 'informaticalab-revamped.appspot.com'
   });
 }
 

@@ -29,12 +29,18 @@ export default async (req, res) => {
 
         // Checking whether every item is in inventory (inventory level > 0), otherwise throw error.
         for(const item of items) {
-          delete item.img; // This is only useful for the frontend, so it doesn't have to be stored to the DB.
+          delete item.img; // The img is only useful for the frontend, so it doesn't have to be stored to the DB, and we delete it from the map.
           for(const itemID of item.itemIDs) {
-            if(itemsInDB[itemID].quantity <= 0) {
+            if(itemsInDB[itemID].quantity < item.quantity) {
               res.status(409);
               return reject();
             }
+
+            // Deducting the order amount of each item from the quantity in the database
+            const itemRef = db.doc(`products/${itemID}`);
+            t.update(itemRef, {
+              quantity: itemsInDB[itemID].quantity - item.quantity
+            })
           }
         }
 
