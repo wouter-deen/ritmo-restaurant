@@ -84,7 +84,9 @@ export default function Login()  {
           <FormControl>
             <FormLabel>Email</FormLabel>
             <InputGroup>
-              <InputLeftElement color="gray.300" children={<FaUser color="gray.300"/>}/>
+              <InputLeftElement color="gray.300">
+                <FaUser color="gray.300"/>
+              </InputLeftElement>
               <Input placeholder="chef@piccomelodioso.nl" id="loginEmail" onChange={() => handleFieldChange()}/>
             </InputGroup>
           </FormControl>
@@ -92,7 +94,9 @@ export default function Login()  {
           <FormControl mt={4} mb={1}>
             <FormLabel>Wachtwoord</FormLabel>
             <InputGroup>
-              <InputLeftElement color="gray.300" children={<FaLock color="gray.300"/>}/>
+              <InputLeftElement color="gray.300">
+                <FaLock color="gray.300"/>
+              </InputLeftElement>
               <Input type="password" placeholder="PurpleHamster3!" id="loginPassword" onChange={() => handleFieldChange()}/>
             </InputGroup>
           </FormControl>

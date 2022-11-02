@@ -56,7 +56,7 @@ export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
         <ModalHeader pb={0}>Start order</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          <Text>Are you sure that you want to mark this order as complete? It won't be visible anymore in the dashboard.</Text>
+          <Text>Are you sure that you want to mark this order as complete? It won&apos;t be visible anymore in the dashboard.</Text>
         </ModalBody>
 
         <ModalFooter>
