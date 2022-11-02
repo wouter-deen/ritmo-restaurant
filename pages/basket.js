@@ -1,8 +1,9 @@
 import {
   Box,
   Button,
-  Divider,
-  Flex, FormControl, FormLabel,
+  Flex,
+  FormControl,
+  FormLabel,
   Heading,
   Icon,
   Img,
@@ -12,7 +13,7 @@ import {
   Table,
   Tbody,
   Td,
-  Tr, useToast
+  Tr
 } from "@chakra-ui/react";
 import {FaShoppingBasket} from "react-icons/fa";
 import NavBar from "@/components/NavBar";
@@ -45,8 +46,7 @@ export default function Basket() {
       }),
     }).then((response) => response.json())
       .then(async (res) => {
-        console.log(res)
-        await router.push(`/tracker&orderID=${res.orderID}`)
+        await router.push(`/tracker?orderID=${res.orderID}`)
       })
   }
 

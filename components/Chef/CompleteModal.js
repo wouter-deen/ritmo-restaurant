@@ -14,11 +14,12 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import {mutate} from "swr";
 
-export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
+export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
+  const router = useRouter();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  const startOrder = async () => {
+  const completeOrder = async () => {
     setLoading(true);
     await fetch(`${Host()}/api/chef/updateOrderStatus`, {
       method: 'POST',
@@ -28,7 +29,7 @@ export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
       body: JSON.stringify({
         idToken: idToken,
         orderID: orderID,
-        status: 1
+        status: 2
       }),
     }).then(response => response.json())
       .then(async res => {
@@ -36,18 +37,16 @@ export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
         if (res.status !== 200) {
           throw res;
         } else {
-          await mutate(`${Host()}/api/chef/getActiveOrders/${idToken}`, (data) => {
-            console.log(data)
-          });
+          await mutate(`${Host()}/api/chef/getActiveOrders/${idToken}`);
           setLoading(false);
           toast({
-            title: "Order accepted.",
+            title: "Order completed.",
             duration: 3000,
             status: "success"
           });
           onClose();
         }
-    })
+      })
   }
 
   return (
@@ -57,14 +56,14 @@ export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
         <ModalHeader pb={0}>Start order</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          <Text>Are you sure that you want to start this order?</Text>
+          <Text>Are you sure that you want to mark this order as complete? It won't be visible anymore in the dashboard.</Text>
         </ModalBody>
 
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button colorScheme="blue" onClick={startOrder} isLoading={loading}>Start order</Button>
+          <Button colorScheme="blue" onClick={completeOrder} isLoading={loading}>Complete order</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

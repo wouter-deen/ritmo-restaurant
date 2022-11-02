@@ -1,5 +1,4 @@
 import firebaseadmin from "./firebaseadmin";
-import getProducts from "@/api/getProducts";
 
 export default async (req, res) => {
   return new Promise(async (resolve, reject) => {
@@ -52,7 +51,8 @@ export default async (req, res) => {
           email: email,
           prices: prices,
           paymentMethod: "iDeal",
-          timestamp: date
+          timestamp: date,
+          status: 0
         })
 
         res.status(201).json({status: 201, orderID: orderRef.id});

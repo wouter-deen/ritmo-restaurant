@@ -17,7 +17,8 @@ import {
   Select,
   Stack,
   Text,
-  useNumberInput, useToast
+  useNumberInput,
+  useToast
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import BasketContext from "@/lib/basket-context";
@@ -35,7 +36,7 @@ export default function ItemModal(props) {
 
   if(!props.radioOptions && !props.selectOptions && addButtonDisabled) setAddButtonDisabled(false);
 
-  let { value, getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
+  let { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1, defaultValue: 1, min: 1, max: maxOrderQuantity, precision: 0, value: orderQuantity
   })
 
@@ -71,7 +72,7 @@ export default function ItemModal(props) {
       title: `We've added ${orderQuantity} ${props.name} to your basket.`,
       status: "success",
       isClosable: true,
-      duration: 5000
+      duration: 3000
     });
 
     props.onClose();
@@ -86,6 +87,9 @@ export default function ItemModal(props) {
         setAddButtonDisabled(true);
       } else {
         setAddButtonDisabled(false);
+      }
+      if(maxOrderQuantity <= 0) {
+        setAddButtonDisabled(true);
       }
     }
   }, [props.items, selectValue])
@@ -106,7 +110,7 @@ export default function ItemModal(props) {
     }
   }, [props.items, radioValue])
 
-  // Fires when the user changes the select or radio input.
+  // Fires when the user changes the select input.
   const handleChange = (e, type) => {
     if(type === "select") {
       const newValue = e.target.value;
@@ -114,7 +118,19 @@ export default function ItemModal(props) {
       if(newValue !== "") {
         const itemID = props.selectOptions[newValue]?.itemID;
         const item = props.items[itemID];
-        setMaxOrderQuantity(item?.quantity - minInventoryAmount);
+        console.log(basketItems)
+        console.log(item.name)
+        if(basketItems.length > 0) {
+          for(const basketItem of basketItems) {
+            if(basketItem.options[0] === item.name) {
+              setMaxOrderQuantity(item.quantity - minInventoryAmount - basketItem.quantity);
+            } else {
+              setMaxOrderQuantity(item.quantity - minInventoryAmount)
+            }
+          }
+        } else {
+          setMaxOrderQuantity(item.quantity - minInventoryAmount)
+        }
         setAddButtonDisabled(false);
       } else {
         setAddButtonDisabled(true);

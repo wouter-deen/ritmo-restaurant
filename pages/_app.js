@@ -23,13 +23,16 @@ import "@fontsource/merriweather/400-italic.css"
 import "@fontsource/merriweather/700.css"
 import "@fontsource/merriweather/900.css"
 import {BasketProvider} from "@/lib/basket-context";
+import {AuthProvider} from "@/lib/auth";
 
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider theme={theme}>
-      <BasketProvider>
-        <Component {...pageProps} />
-      </BasketProvider>
+      <AuthProvider>
+        <BasketProvider>
+          <Component {...pageProps} />
+        </BasketProvider>
+      </AuthProvider>
     </ChakraProvider>
   )
 }
