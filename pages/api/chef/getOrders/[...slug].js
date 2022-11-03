@@ -22,7 +22,7 @@ export default async (req, res) => {
             ordersRef = db.collection("order")
               .where("status", ">=", 2)
               .orderBy("status", "desc")
-              .orderBy("timestamp", "asc");
+              .orderBy("timestamp", "desc");
           }
 
           ordersRef.get().then(async (documents) => {
