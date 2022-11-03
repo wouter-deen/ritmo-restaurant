@@ -20,7 +20,8 @@ export default async (req, res) => {
               .orderBy("timestamp", "asc");
           } else if(type === "finished") {
             ordersRef = db.collection("order")
-              .where("status", "==", 2)
+              .where("status", ">=", 2)
+              .orderBy("status", "desc")
               .orderBy("timestamp", "asc");
           }
 

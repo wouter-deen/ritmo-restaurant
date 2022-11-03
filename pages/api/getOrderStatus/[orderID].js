@@ -12,7 +12,7 @@ export default async (req, res) => {
           status: order.status,
           timestamp: order.timestamp
         });
-      } else res.status(404);
+      } else res.status(404).json({invalid: true});
       return resolve();
     } catch (e) {
       res.status(400).json(e)

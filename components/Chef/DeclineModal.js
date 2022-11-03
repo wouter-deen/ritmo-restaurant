@@ -14,11 +14,11 @@ import {Host} from "@/lib/host";
 import {useState} from "react";
 import {mutate} from "swr";
 
-export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
+export default function DeclineModal({isOpen, onClose, orderID, idToken}) {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  const completeOrder = async () => {
+  const declineOrder = async () => {
     setLoading(true);
     await fetch(`${Host()}/api/chef/updateOrderStatus`, {
       method: 'POST',
@@ -28,7 +28,7 @@ export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
       body: JSON.stringify({
         idToken: idToken,
         orderID: orderID,
-        status: 2
+        status: 3
       }),
     }).then(response => response.json())
       .then(async res => {
@@ -38,8 +38,9 @@ export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
           await mutate(`${Host()}/api/chef/getOrders/active/${idToken}`);
           setLoading(false);
           toast({
-            title: "Order completed.",
-            duration: 3000,
+            title: "Order declined.",
+            description: "The order has been declined. It will still be visible in the completed orders tab.",
+            duration: 10000,
             status: "success"
           });
           onClose();
@@ -51,17 +52,17 @@ export default function CompleteModal({isOpen, onClose, orderID, idToken}) {
     <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInBottom'>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader pb={0}>Complete order</ModalHeader>
+        <ModalHeader pb={0}>Decline order</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
-          <Text>Are you sure that you want to mark this order as complete? This will notify the customer that their order is ready for pick-up.</Text>
+          <Text>Are you sure that you want to decline this order?</Text>
         </ModalBody>
 
         <ModalFooter>
           <Button mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button colorScheme="blue" onClick={completeOrder} isLoading={loading}>Complete order</Button>
+          <Button colorScheme="red" onClick={declineOrder} isLoading={loading}>Decline order</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

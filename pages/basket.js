@@ -78,7 +78,7 @@ export default function Basket() {
             <AlertIcon/>
             <Flex flexDir="column">
               <AlertTitle color="blue.800">Your basket is empty.</AlertTitle>
-              <AlertDescription color="blue.800">Take a look at the menu and order some smokin' hot food!</AlertDescription>
+              <AlertDescription color="blue.800">Take a look at the menu and order some smokin&apos; hot food!</AlertDescription>
               <Button w="fit-content" rightIcon={<ArrowForwardIcon/>} mt={2} colorScheme="blue"
                       onClick={() => router.push("/")}
               >

@@ -20,7 +20,7 @@ export default function PromotionModal({isOpen, onClose}) {
         <ModalCloseButton/>
         <ModalBody>
           <Text>
-            For each order in November larger than €25, you'll get two <b>free fast passes</b> for a ride of your choice!
+            For each order in November larger than €25, you&apos;ll get two <b>free fast passes</b> for a ride of your choice!
           </Text>
         </ModalBody>
 
