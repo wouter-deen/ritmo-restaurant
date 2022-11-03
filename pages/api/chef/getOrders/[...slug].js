@@ -2,7 +2,9 @@ import firebaseadmin from "../../firebaseadmin";
 
 export default async (req, res) => {
   return new Promise(async (resolve, reject) => {
-    const idToken = req.query.idToken;
+    const {slug} = req.query;
+    const type = slug[0];
+    const idToken = slug[1];
     const allOrders = [];
 
     const db = firebaseadmin.firestore();
@@ -10,10 +12,18 @@ export default async (req, res) => {
       firebaseadmin.auth()
         .verifyIdToken(idToken)
         .then(async () => {
-          const ordersRef = db.collection("order")
-            .where("status", "<", 2)
-            .orderBy("status", "desc")
-            .orderBy("timestamp", "asc");
+          let ordersRef;
+          if(type === "active") {
+            ordersRef = db.collection("order")
+              .where("status", "<", 2)
+              .orderBy("status", "desc")
+              .orderBy("timestamp", "asc");
+          } else if(type === "finished") {
+            ordersRef = db.collection("order")
+              .where("status", "==", 2)
+              .orderBy("timestamp", "asc");
+          }
+
           ordersRef.get().then(async (documents) => {
             documents.forEach((doc) => {
               if (doc.data()) {
@@ -21,7 +31,7 @@ export default async (req, res) => {
                 allOrders.push({
                   orderID: doc.id,
                   items: data.items,
-                  timestamp: data.timestamp,
+                  timestamp: data.timestamp.toDate(),
                   status: data.status
                 });
               }

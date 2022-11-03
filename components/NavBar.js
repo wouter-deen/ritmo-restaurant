@@ -1,21 +1,22 @@
-import {Box, Flex, IconButton, Img, Input, Text} from "@chakra-ui/react";
+import {Box, Button, Circle, Flex, IconButton, Img} from "@chakra-ui/react";
 import {FaShoppingBasket} from "react-icons/fa";
 import {useRouter} from "next/router";
+import {useContext} from "react";
+import basketContext from "@/lib/basket-context";
 
 export default function NavBar() {
   const router = useRouter();
-
-  const ItemPrice = ({price, quantity}) => (
-    <Box bg="gray.100" rounded="md" w="fit-content" textAlign="right" mt={1}>
-      <Text px={1}>€ {price * quantity} ({quantity} × {price})</Text>
-    </Box>
-  )
+  const [basketItems] = useContext(basketContext)
 
   return (
-    <Box pt={2}>
-      <Flex boxShadow="xl" px={2} py={2} mx={2} mb={8} rounded="xl" bg="white" pos="fixed" w="calc(100% - 1rem)" zIndex={1}>
-        <Img src="/ritmo-logo.svg" boxSize={10} mr={3} onClick={() => router.push("/")}/>
-        <Input placeholder="Search..." mr={2}/>
+    <Box pt={2} pos="relative">
+      <Flex boxShadow="xl" px={2} py={2} mx={2} mb={8} rounded="xl" bg="white" pos="fixed" w="calc(100% - 1rem)"
+            zIndex={1} justify="space-between"
+      >
+        <Flex align="center">
+          <Img src="/ritmo-logo.svg" boxSize={10} mr={3} onClick={() => router.push("/")}/>
+          <Button onClick={() => router.push("/")}>Menu</Button>
+        </Flex>
         <IconButton
           aria-label='Options'
           icon={<FaShoppingBasket />}
@@ -23,6 +24,9 @@ export default function NavBar() {
           mr={2}
           onClick={() => router.push("/basket")}
         />
+        <Circle pos="absolute" size="18px" bg="red.300" color="white" fontWeight={600} fontSize="2xs" right={3} top={1}>
+          {basketItems.length}
+        </Circle>
       </Flex>
     </Box>
   )

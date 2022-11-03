@@ -19,6 +19,7 @@ import {useAuth} from "@/lib/auth";
 import {useRouter} from "next/router";
 import {FaLock, FaUser} from "react-icons/fa";
 import {ArrowForwardIcon} from "@chakra-ui/icons";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function Login()  {
   const auth = useAuth();
@@ -29,6 +30,11 @@ export default function Login()  {
   const [openAlert, setOpenAlert] = useState(false);
 
   const toast = useToast();
+
+  const firebaseAuth = getAuth();
+  onAuthStateChanged(firebaseAuth, (user) => {
+    if(user && typeof window !== "undefined") router.push("/chef/dashboard");
+  })
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -77,10 +83,10 @@ export default function Login()  {
   }
 
   return (
-    <Box px={8} py={8} align="center">
+    <Box px={8} py={8} align="center" bg="gray.100" h="100vh">
       <Box maxW="md" align="left">
-        <Heading fontFamily="Merriweather" fontWeight={900}>Log in</Heading>
-        <form onSubmit={handleLogin}>
+        <Heading fontFamily="Merriweather" fontWeight={900}>Log in for Chefs</Heading>
+        <Box as="form" mt={4} p={4} bg="white" rounded="lg" onSubmit={handleLogin}>
           <FormControl>
             <FormLabel>Email</FormLabel>
             <InputGroup>
@@ -101,10 +107,12 @@ export default function Login()  {
             </InputGroup>
           </FormControl>
 
-          <Button isLoading={loading} colorScheme="blue" mt={4} type="submit" disabled={submitDisabled} float="right" rightIcon={<ArrowForwardIcon/>}>
-            Log in
-          </Button>
-        </form>
+          <Box h={14}>
+            <Button isLoading={loading} colorScheme="blue" mt={4} type="submit" disabled={submitDisabled} float="right" rightIcon={<ArrowForwardIcon/>}>
+              Log in
+            </Button>
+          </Box>
+        </Box>
 
         <Collapse in={openAlert} animateOpacity>
           <Alert status="error" borderRadius="6px" mb={4} ml={4} mr={4} w="calc(100% - 2em)">

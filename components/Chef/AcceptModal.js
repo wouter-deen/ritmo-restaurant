@@ -7,11 +7,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text, useToast
+  Text,
+  useToast
 } from "@chakra-ui/react";
 import {Host} from "@/lib/host";
 import {useState} from "react";
-import {useRouter} from "next/router";
 import {mutate} from "swr";
 
 export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
@@ -32,13 +32,10 @@ export default function AcceptModal({isOpen, onClose, orderID, idToken}) {
       }),
     }).then(response => response.json())
       .then(async res => {
-        console.log(res)
         if (res.status !== 200) {
           throw res;
         } else {
-          await mutate(`${Host()}/api/chef/getActiveOrders/${idToken}`, (data) => {
-            console.log(data)
-          });
+          await mutate(`${Host()}/api/chef/getOrders/active/${idToken}`);
           setLoading(false);
           toast({
             title: "Order accepted.",

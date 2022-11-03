@@ -24,7 +24,7 @@ import {useContext, useEffect, useState} from "react";
 import BasketContext from "@/lib/basket-context";
 
 export default function ItemModal(props) {
-  const [basketItems, addItem, removeItem, prices] = useContext(BasketContext);
+  const [basketItems, addItem] = useContext(BasketContext);
   const [radioValue, setRadioValue] = useState("");
   const [selectValue, setSelectValue] = useState("");
   const [orderQuantity, setOrderQuantity] = useState(1);
@@ -34,7 +34,10 @@ export default function ItemModal(props) {
   const minInventoryAmount = process.env.NEXT_PUBLIC_MIN_INVENTORY_AMOUNT;
   const toast = useToast();
 
-  if(!props.radioOptions && !props.selectOptions && addButtonDisabled) setAddButtonDisabled(false);
+  if(!props.radioOptions && !props.selectOptions && addButtonDisabled) {
+    setAddButtonDisabled(false);
+    setMaxOrderQuantity(props.items[props.itemID].quantity - minInventoryAmount)
+  }
 
   let { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1, defaultValue: 1, min: 1, max: maxOrderQuantity, precision: 0, value: orderQuantity
@@ -76,6 +79,9 @@ export default function ItemModal(props) {
     });
 
     props.onClose();
+    setRadioValue("");
+    setSelectValue("");
+    setOrderQuantity(1);
   }
 
   // Sets and updates maxOrderQuantity
@@ -118,8 +124,6 @@ export default function ItemModal(props) {
       if(newValue !== "") {
         const itemID = props.selectOptions[newValue]?.itemID;
         const item = props.items[itemID];
-        console.log(basketItems)
-        console.log(item.name)
         if(basketItems.length > 0) {
           for(const basketItem of basketItems) {
             if(basketItem.options[0] === item.name) {
