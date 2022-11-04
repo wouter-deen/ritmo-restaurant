@@ -5,6 +5,7 @@ import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {useRouter} from "next/router";
 import OrdersTable from "@/components/Chef/OrdersTable";
 import {FaSignOutAlt} from "react-icons/fa";
+import InventoryTable from "@/components/Chef/InventoryTable";
 
 export default function Dashboard() {
   const auth = useAuth();
@@ -30,6 +31,7 @@ export default function Dashboard() {
           <Img src="/ritmo-logo.svg" boxSize={10} mr={3} onClick={() => router.push("/")}/>
           <Tab>Active orders</Tab>
           <Tab>Finished orders</Tab>
+          <Tab>Inventory</Tab>
           <Tab>Options</Tab>
         </TabList>
         <TabPanels pt={24}>
@@ -38,6 +40,9 @@ export default function Dashboard() {
           </TabPanel>
           <TabPanel bg="white" rounded="xl">
             <OrdersTable idToken={idToken} type="finished"/>
+          </TabPanel>
+          <TabPanel bg="white" rounded="xl">
+            <InventoryTable idToken={idToken}/>
           </TabPanel>
           <TabPanel bg="white" rounded="xl">
             <Button onClick={() => auth.signout()} rightIcon={<FaSignOutAlt/>}>Log out</Button>

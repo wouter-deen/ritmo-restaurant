@@ -38,7 +38,7 @@ export default function Menu() {
                     {name: "Pepperoni", itemID: 3},
                     {name: "Caprese", itemID: 4}
                   ]}
-                  price={11.99}
+                  price={items[2]?.unitPrice}
                   bottomOffset={4}
                   items={items}
         />
@@ -56,7 +56,7 @@ export default function Menu() {
                     {name: "Curry ketchup sauce", itemIDs: [0,5]},
                     {name: "No sauce", itemIDs: [0]}
                   ]}
-                  price={3.99}
+                  price={items[0]?.unitPrice}
                   bottomOffset={-3}
                   items={items}
         />
@@ -67,7 +67,7 @@ export default function Menu() {
                   descr="Fluffy American pancakes, made from a recipe that's rumoured to be older than mankind. Topped with maple syrup and fresh blueberries."
                   img="/pancakes.png"
                   pic="/pancakes_pic.jpg"
-                  price={8.99}
+                  price={items[1]?.unitPrice}
                   bottomOffset={-2}
                   items={items}
                   itemID={1}
