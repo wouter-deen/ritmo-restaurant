@@ -35,8 +35,8 @@ export default function InventoryTable({idToken}) {
   const handleRefresh = async () => {
     await mutate(`${Host()}/api/getProducts`)
     toast({
-      title: "Orders refreshed.",
-      description: "We refreshed the orders from the database.",
+      title: "Inventory refreshed.",
+      description: "We refreshed the inventory from the database.",
       status: "success",
       isClosable: true,
       duration: 3000
